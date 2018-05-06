@@ -1,0 +1,9 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  title Redirecting...
+  script.
+    window.location.replace('#{appLink}')
+    setTimeout(() => {
+      window.location.replace('#{appStoreLink}')
+    }, 25)

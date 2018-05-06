@@ -1,0 +1,23 @@
+{
+  "name": "soon-share",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev",
+    "deploy": "now && now alias"
+  },
+  "devDependencies": {
+    "micro": "^9.3.0",
+    "micro-dev": "^2.2.2"
+  },
+  "dependencies": {
+    "ismobilejs": "^0.4.1",
+    "pug": "^2.0.3"
+  },
+  "now": {
+    "alias": "soon-share.now.sh"
+  }
+}

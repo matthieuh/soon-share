@@ -1,0 +1,55 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Gothic A1', sans-serif;
+  line-height: 1.5;
+  color: #323541;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1, p, section {
+  text-align: center;
+}
+
+h1 > img {
+  padding-right: 16px;
+}
+
+p {
+  max-width: 400px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:not(.button):hover {
+  border-bottom: 2px solid #323541;
+}
+
+.button {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.button > img {
+  margin-top: 10px;
+}
+
+.or {
+  margin: 20px 0;
+}
