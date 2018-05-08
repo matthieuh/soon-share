@@ -7,15 +7,20 @@
   "scripts": {
     "start": "micro",
     "dev": "micro-dev",
-    "deploy": "now && now alias"
+    "deploy": "now --dotenv && now alias"
   },
   "devDependencies": {
     "micro": "^9.3.0",
     "micro-dev": "^2.2.2"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^5.0.1",
     "ismobilejs": "^0.4.1",
-    "pug": "^2.0.3"
+    "lodash": "^4.17.10",
+    "microrouter": "^3.1.2",
+    "pug": "^2.0.3",
+    "qs": "^6.5.2"
   },
   "now": {
     "alias": "soon-share.now.sh"

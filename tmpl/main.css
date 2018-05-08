@@ -1,8 +1,7 @@
 body, html {
   height: 100%;
   margin: 0;
-  display: flex;
-  flex-direction: column;
+  background-color: #FAFAFA;
   font-family: 'Gothic A1', sans-serif;
   line-height: 1.5;
   color: #323541;
@@ -15,7 +14,7 @@ main {
   justify-content: center;
 }
 
-h1, p, section {
+h1, h2, p, section, footer {
   text-align: center;
 }
 

@@ -1,0 +1,36 @@
+header {
+  background: linear-gradient(-30deg, #e60ba1, #ff6663);
+  padding: 98px 0 68px;
+  color: white;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.item {
+  width: 560px;
+  height: 130px;
+  background-color: white;
+  border-radius: 15px;
+  margin: 16px;
+  display: flex;
+  overflow: hidden;
+}
+
+.cover {
+  width: 130px;
+  height: 130px;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+}
+
+.title {
+  color: #202024;
+}

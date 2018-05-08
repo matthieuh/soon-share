@@ -1,21 +1,31 @@
 doctype html
 head
   meta(charset='UTF-8')
+  meta(property='og:title', content='SOON Sharing title')
+  meta(property='og:description', content='SOON Sharing description')
+  meta(property='og:image', content=items[0].cover)
+
   title SOON share
   link(href='https://fonts.googleapis.com/css?family=Gothic+A1',rel='stylesheet')
   style
-    include no-app.css
+    include main.css
+    include collection.css
   body
-    main
+    header
       h1
-        img(src='http://soonforever.co/assets/img/soon.png', width=160)
-        | share
-      p.intro Soon is your everyday bucket list, you can access this shared list using the iOS mobile app
-      section
-        div
-          a.button(href='https://itunes.apple.com/app/id939751975')
-            img(src='http://soonforever.co/assets/img/header/appstore.png', height=42)
-        div.or
-          | or
-        div
-          a(href='http://soonforever.co/') Go to soonforever.co
+        img(src='http://soonforever.co/assets/img/soon-w.png', width=106)
+      p.intro Soon is your everyday bucket list, you can access this shared #{type} using the iOS mobile app
+    main
+      h2 #{title}
+      .items
+        each item, i in items
+          .item
+            img.cover(src=item.cover)
+            .content
+              .title= item.name
+    footer
+      div
+        a.button(href='https://itunes.apple.com/app/id939751975')
+          img(src='http://soonforever.co/assets/img/header/appstore.png', height=42)
+      div
+        a(href='http://soonforever.co/') Go to soonforever.co
