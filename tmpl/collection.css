@@ -2,6 +2,16 @@ header {
   background: linear-gradient(-30deg, #e60ba1, #ff6663);
   padding: 98px 0 68px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 202px;
+  height: 202px;
+  border-radius: 101px;
 }
 
 .items {
@@ -21,16 +31,21 @@ header {
   overflow: hidden;
 }
 
-.cover {
+.item .cover {
   width: 130px;
   height: 130px;
 }
 
-.content {
+.item .cover:hover {
+  opacity: 0.5,
+}
+
+.item .content {
   flex: 1;
   padding: 16px;
 }
 
-.title {
+.item .title {
   color: #202024;
+  font-weight: bold;
 }

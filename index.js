@@ -4,16 +4,49 @@ const { router, get } = require('microrouter')
 const isMobile = require('ismobilejs')
 const pug = require('pug')
 const axios = require('axios')
-const qs = require('qs');
-const _ = require('lodash');
+const qs = require('qs')
+const _ = require('lodash')
 
 require('dotenv').config()
 
 const APP_URL_SCHEME = 'soon'
 const APP_STORE_LINK = 'https://itunes.apple.com/app/id939751975'
 
-function sleep(ms = 0) {
-  return new Promise(r => setTimeout(r, ms));
+const CONFIG = {
+  collection: {
+    mobileDeepLink: 'collection',
+    fetchUrls: {
+      collectionData: ({ collectionId }) => `/v1/collections/${collectionId}`
+    },
+    fetchDataMapper: {
+      title: 'collectionData.collection.title',
+      description: 'collectionData.collection.description',
+      avatar: 'collectionData.collection.image_url',
+      items: 'collectionData.collection.items',
+    },
+  },
+  userCategory: {
+    mobileDeepLink: 'shared-list',
+    fetchUrls: {
+      categoryData: ({ userId, userCategoryId }) => `/v2/users/${userId}/categories/${userCategoryId}/items`,
+      userData: ({ userId }) => `/v1/users/${userId}`
+    },
+    fetchDataMapper: {
+      items: 'categoryData.user_items',
+      avatar: 'userData.user.avatar_url',
+      user: 'userData.user'
+    },
+  },
+  user: {
+    mobileDeepLink: 'user',
+    fetchUrls: {
+      userData: ({ userId }) => `/v2/users/social-profile/${userId}`
+    },
+    fetchDataMapper: {
+      avatar: 'userData.user.avatar_url',
+      user: 'userData.user'
+    },
+  }
 }
 
 const render = (res, filename, variables = {}, status = 200) => {
@@ -27,8 +60,15 @@ const createAuthHeader = token => ({
   Authorization: `Bearer ${token.accessToken}`
 })
 
-const listSharing = async (req, res) => {
-  const { url, params: { id, type } } = req
+const listSharing = ({ type: listType }) => async (req, res) => {
+  const { url, params: {
+    type: typeParam,
+    ...restParams
+  } } = req
+
+  const type = listType || typeParam;
+
+  console.log('type', type)
 
   let redirectionUrl
 
@@ -45,54 +85,65 @@ const listSharing = async (req, res) => {
     password: process.env.PASSWORD,
   }
 
-  const { data: authData } = await instance.post(process.env.API_AUTHENTICATION_PATH, params)
+  const { data: authData } = await instance
+    .post(process.env.API_AUTHENTICATION_PATH, params)
     .catch(error => {
-      console.log('error getting auth', error);
-    });
+      console.log('error getting auth', error)
+    })
   console.log('authData', authData)
-  instance.defaults.headers.common['Authorization'] = `Bearer ${authData.access_token}`;
-  await sleep(500)
+  instance.defaults.headers.common['Authorization'] = `Bearer ${authData.access_token}`
 
-  switch (type) {
-    case 'list':
-      redirectionUrl = url.replace('lists', 'shared-list')
-      break;
-    case 'collections':
-      redirectionUrl = url
-      break;
-    default:
-      render(res, '404', {}, 404)
+  if (!CONFIG[type]) {
+    render(res, '404', {}, 404)
   }
 
-  const collectionRes = await instance.get(`/collections/${id}`)
-    .catch(error => {
-      console.log('error getting collection', error);
-    });
-  const { data: { collection: data } } = collectionRes
-  console.log('data', data.items[0], data.items[0].api_item.attributes)
+  const CONF = CONFIG[type]
+
+  redirectionUrl = url.replace(type, CONF.mobileDeepLink)
+
+  const fetchUrls = _.get(CONF, 'fetchUrls', {})
+  const data = await Object.entries(fetchUrls)
+    .reduce(async (previousPromise, [key, fetchUrlBuilder]) => {
+        const acc = await previousPromise;
+        const fetchRes = await instance.get(fetchUrlBuilder(restParams)).catch(error => render(res, '404', {}, 404));
+        acc[key] = fetchRes.data
+        return acc
+      }, Promise.resolve({}))
+
+  console.log('data', data)
 
   const isIphone = isMobile(req.headers['user-agent']).apple.phone
 
   if (isIphone) {
-    render(res, 'redirect', {
+    return render(res, 'redirect', {
       appLink: `${APP_URL_SCHEME}://${redirectionUrl}`,
       appStoreLink: APP_STORE_LINK
     })
-  } else {
-    render(res, 'no-app', {
-      type,
-      title: _.get(data, 'title'),
-      items: data.items.map(item => {
+  }
+
+  const dataMapper = _.get(CONF, 'fetchDataMapper', {});
+  const variables = Object.entries(dataMapper)
+    .reduce((acc, [key, mapper]) => {
+      acc[key] = _.get(data, mapper)
+      return acc
+    }, {})
+
+  variables.items = _.get(variables, 'items', [])
+    .map(item => {
         const cover = _.find(item.api_item.attributes, { name: 'cover' })
+        const thumb = _.find(item.api_item.attributes, { name: 'thumbnail' })
         return {
           name: _.get(item, 'api_item.name'),
-          cover: cover.content,
+          cover: _.get(thumb, 'content') || _.get(cover, 'content'),
         }
-      }),
-    })
-  }
+      })
+
+  return render(res, 'no-app', variables)
 }
 
 module.exports = router(
-  get('/:type/:id', listSharing),
+  get('/collection/:collectionId', listSharing({ type: 'collection' })),
+  get('/user/:userId/category/:userCategoryId', listSharing({ type: 'userCategory' })),
+  get('/c/:userCategoryHash', listSharing({ type: 'userCategory', hash: true })),
+  get('/user/:userId', listSharing({ type: 'user' })),
 )

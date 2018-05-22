@@ -1,11 +1,11 @@
 doctype html
 head
   meta(charset='UTF-8')
-  meta(property='og:title', content='SOON Sharing title')
-  meta(property='og:description', content='SOON Sharing description')
-  meta(property='og:image', content=items[0].cover)
+  meta(property='og:title', content='SOON – ' + title)
+  meta(property='og:description', content=description)
+  meta(property='og:image', content=avatar)
 
-  title SOON share
+  title SOON - #{title}
   link(href='https://fonts.googleapis.com/css?family=Gothic+A1',rel='stylesheet')
   style
     include main.css
@@ -14,13 +14,13 @@ head
     header
       h1
         img(src='http://soonforever.co/assets/img/soon-w.png', width=106)
-      p.intro Soon is your everyday bucket list, you can access this shared #{type} using the iOS mobile app
+      .avatar(style='background-image:url(' + avatar + '); background-size: cover;')
     main
       h2 #{title}
       .items
         each item, i in items
           .item
-            img.cover(src=item.cover)
+            .cover(style='background-image:url(' + item.cover + '); background-size: cover;')
             .content
               .title= item.name
     footer
