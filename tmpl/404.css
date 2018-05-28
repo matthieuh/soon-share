@@ -2,3 +2,11 @@ body, html {
   display: flex;
   flex-direction: column;
 }
+
+.button {
+  opacity: 0.6;
+}
+
+.button:hover {
+  opacity: 1;
+}

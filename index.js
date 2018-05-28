@@ -21,8 +21,9 @@ const CONFIG = {
     fetchDataMapper: {
       title: 'collectionData.collection.title',
       description: 'collectionData.collection.description',
-      avatar: 'collectionData.collection.image_url',
+      mainCover: 'collectionData.collection.image_url',
       items: 'collectionData.collection.items',
+      authorReplacer: 'collectionData.collection.subtitle'
     },
   },
   userCategory: {
@@ -141,9 +142,13 @@ const listSharing = ({ type: listType }) => async (req, res) => {
   return render(res, 'no-app', variables)
 }
 
+
+const notFound = (req, res) => render(res, '404', {}, 404)
+
 module.exports = router(
   get('/collection/:collectionId', listSharing({ type: 'collection' })),
   get('/user/:userId/category/:userCategoryId', listSharing({ type: 'userCategory' })),
   get('/c/:userCategoryHash', listSharing({ type: 'userCategory', hash: true })),
   get('/user/:userId', listSharing({ type: 'user' })),
+  get('/*', notFound)
 )

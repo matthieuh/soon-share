@@ -1,10 +1,22 @@
+@font-face {
+  font-family: 'Apercu';
+  font-weight: 400;
+  src: url('./assets/fonts/apercu/apercu-regular-webfont.ttf') format('ttf');
+}
+
 body, html {
   height: 100%;
   margin: 0;
   background-color: #FAFAFA;
-  font-family: 'Gothic A1', sans-serif;
+  font-family: 'Apercu', sans-serif;
   line-height: 1.5;
   color: #323541;
+}
+
+.wrapper {
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 main {
@@ -37,12 +49,33 @@ a:not(.button):hover {
 }
 
 .button {
-  opacity: 0.6;
+  opacity: 1;
   transition: opacity 0.2s;
+  border-radius: 50px;
+  border: none;
+  padding: 0.6em 1.4em;
+  font-size: 0.8em;
 }
 
 .button:hover {
-  opacity: 1;
+  opacity: 0.6;
+}
+
+.button.inverted {
+  border: 3px solid white;
+  background-color: transparent;
+  color: white;
+}
+
+.button.primary {
+  color: white;
+  background-color: #007aff;
+}
+
+.button.secondary {
+  color: #323541;
+  background-color: #efefef;
+  font-weight: bold;
 }
 
 .button > img {

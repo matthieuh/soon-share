@@ -1,11 +1,71 @@
 header {
+  position: relative;
   background: linear-gradient(-30deg, #e60ba1, #ff6663);
-  padding: 98px 0 68px;
+  min-height: 60vh;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+header .content {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header .content h1 {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85)
+}
+
+header .content p {
+  padding: 0 3em;
+  color: rgba(255, 255, 255, 0.65)
+}
+
+header .content .author {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .content .author .name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+header .content .author .name .circleLogo {
+  margin-right: 10px;
+}
+
+header .content .author .name strong {
+  margin-left: 6px;
+  color: rgba(255, 255, 255);
+}
+
+header .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .avatar {
@@ -19,21 +79,28 @@ header {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  background-color: white;
+  padding: 6px 0 5em 0;
 }
 
 .item {
-  width: 560px;
-  height: 130px;
-  background-color: white;
-  border-radius: 15px;
-  margin: 16px;
+  max-width: 450px;
+  width: 450px;
+  margin: 0px 18px;
+  padding: 18px 0;
   display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
+.item:not(:last-child) {
+  border-bottom: 1px solid #efefef;
+}
+
 .item .cover {
-  width: 130px;
-  height: 130px;
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
 }
 
 .item .cover:hover {
@@ -42,10 +109,30 @@ header {
 
 .item .content {
   flex: 1;
-  padding: 16px;
+  padding: 0 16px;
 }
 
 .item .title {
-  color: #202024;
+  color: #323541;
   font-weight: bold;
+  font-size: 0.95em;
+}
+
+.item .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Global */
+
+.circleLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-image: linear-gradient(126deg, #ff6564, #ea2092);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

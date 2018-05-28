@@ -6,26 +6,37 @@ head
   meta(property='og:image', content=avatar)
 
   title SOON - #{title}
-  link(href='https://fonts.googleapis.com/css?family=Gothic+A1',rel='stylesheet')
   style
     include main.css
     include collection.css
   body
-    header
-      h1
-        img(src='http://soonforever.co/assets/img/soon-w.png', width=106)
-      .avatar(style='background-image:url(' + avatar + '); background-size: cover;')
-    main
-      h2 #{title}
+    header(style='background:url(' + mainCover + '); background-size: cover;')
+      .content.wrapper
+        h1 #{title}
+        p #{description}
+        .author
+          if author
+            .name
+              .circleLogo
+                img(src='http://soonforever.co/assets/img/soon-w.png', width=30)
+              span Selected by
+              strong!= ' ' + author
+            button.button.primary.follow Follow
+          else if authorReplacer
+            .name
+              .circleLogo
+                img(src='http://soonforever.co/assets/img/soon-w.png', width=30)
+              span #{authorReplacer}
+      .overlay
+    main.wrapper
       .items
         each item, i in items
           .item
             .cover(style='background-image:url(' + item.cover + '); background-size: cover;')
             .content
               .title= item.name
+              //- .description A short description about this item
+            .actions
+              button.button.secondary Add +
     footer
-      div
-        a.button(href='https://itunes.apple.com/app/id939751975')
-          img(src='http://soonforever.co/assets/img/header/appstore.png', height=42)
-      div
-        a(href='http://soonforever.co/') Go to soonforever.co
+      include download-app-banner.pug
